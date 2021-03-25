@@ -11,7 +11,8 @@
     "url": "https://github.com/sashmlv/rrpm.git"
   },
   "scripts": {
-    "start": "electron dist",
+    "start": "npm run build && electron dist",
+    "el": "electron main",
     "dev": "webpack serve -c webpack.gui",
     "build": "webpack -c webpack.main && webpack -c webpack.gui",
     "build:main": "webpack -c webpack.main",
@@ -31,5 +32,8 @@
     "webpack": "^5.16.0",
     "webpack-cli": "^4.4.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.2"
   }
 }

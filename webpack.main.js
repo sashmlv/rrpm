@@ -1,6 +1,7 @@
 'use strict';
 
-const path = require( 'path' ),
+const webpack = require( 'webpack' ),
+   path = require( 'path' ),
    MAIN = path.resolve( __dirname, 'main' ),
    DIST = path.resolve( __dirname, 'dist' ),
    mode = process.env.NODE_ENV || 'development',
@@ -33,4 +34,10 @@ module.exports = {
          },
       },
    },
+   plugins: [
+
+      new webpack.DefinePlugin({
+         BUNDLE: JSON.stringify(true)
+      })
+   ],
 };
