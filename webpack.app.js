@@ -2,9 +2,10 @@
 
 const path = require( 'path' ),
    MiniCssExtractPlugin   = require( 'mini-css-extract-plugin' ),
+   ESLintPlugin = require( 'eslint-webpack-plugin' ),
    CopyPlugin = require( 'copy-webpack-plugin' ),
    ROOT = path.resolve( __dirname ),
-   GUI  = path.resolve( __dirname, 'gui' ),
+   APP  = path.resolve( __dirname, 'app' ),
    MAIN = path.resolve( __dirname, 'main' ),
    DIST = path.resolve( __dirname, 'dist' ),
    mode = process.env.NODE_ENV || 'development',
@@ -17,7 +18,7 @@ module.exports = {
    devtool: prod ? false : 'source-map',
    entry: {
 
-      gui:  path.resolve( GUI,  'app.js' ),
+      app:  path.resolve( APP,  'app.js' ),
    },
    output: {
 
@@ -46,7 +47,8 @@ module.exports = {
       alias: {
          svelte: path.dirname(
             require.resolve( 'svelte/package.json' )
-         )
+         ),
+         components: path.resolve(APP, 'components')
       },
       extensions: [ '.mjs', '.js', '.svelte' ],
       mainFields: [ 'svelte', 'browser', 'module', 'main' ]
@@ -74,23 +76,61 @@ module.exports = {
             }
          },
          {
-            test: /\.(scss|css)$/,
+            test: /\.(css)$/,
             use: [
 
                MiniCssExtractPlugin.loader,
                'css-loader',
-               'sass-loader',
             ],
          },
       ]
    },
    plugins: [
 
+      new ESLintPlugin({
+         baseConfig: {
+            extends: [
+		         'eslint:recommended',
+               'plugin:radar/recommended',
+               'plugin:sonarjs/recommended',
+               'plugin:security/recommended',
+            ],
+            parserOptions: {
+               ecmaVersion: 12,
+               sourceType: 'module'
+            },
+            env: {
+               es6: true,
+               browser: true
+            },
+            plugins: [
+               'svelte3',
+               'xss',
+               'radar',
+		         'unicorn',
+               'sonarjs',
+               'promise',
+               'security',
+            ],
+            overrides: [
+               {
+                  files: ['*.svelte'],
+                  processor: 'svelte3/svelte3'
+               }
+            ],
+         },
+         overrideConfig: {
+            rules: {
+               indent: ['error', 3]
+            }
+         }
+      }
+      ),
       new MiniCssExtractPlugin({ filename: 'styles.css', }),
       new CopyPlugin({
          patterns: [
-            { from: 'gui/index.html' },
-            { from: 'gui/favicon.ico' },
+            { from: 'app/public/index.html' },
+            { from: 'app/public/favicon.ico' },
          ],
       }),
    ],

@@ -6,6 +6,6 @@ const db = new sqlite3.Database(
    config.DB.FILE
 );
 
-// db.run('CREATE TABLE lorem (info TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS users(login)');
 
 module.exports = db;
