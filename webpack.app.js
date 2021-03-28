@@ -5,9 +5,10 @@ const path = require( 'path' ),
    ESLintPlugin = require( 'eslint-webpack-plugin' ),
    CopyPlugin = require( 'copy-webpack-plugin' ),
    ROOT = path.resolve( __dirname ),
-   APP  = path.resolve( __dirname, 'app' ),
-   MAIN = path.resolve( __dirname, 'main' ),
-   DIST = path.resolve( __dirname, 'dist' ),
+   APP  = path.resolve( ROOT, 'app' ),
+   MAIN = path.resolve( ROOT, 'main' ),
+   DIST = path.resolve( ROOT, 'dist' ),
+   NODE_MODULES = path.resolve( ROOT, 'node_modules' ),
    mode = process.env.NODE_ENV || 'development',
    prod = mode === 'production';
 
@@ -48,7 +49,9 @@ module.exports = {
          svelte: path.dirname(
             require.resolve( 'svelte/package.json' )
          ),
-         components: path.resolve(APP, 'components')
+         components: path.resolve( APP, 'components' ),
+         stores: path.resolve( APP, 'stores.js' ),
+         'spectre.css': path.resolve( NODE_MODULES, 'spectre.css' ),
       },
       extensions: [ '.mjs', '.js', '.svelte' ],
       mainFields: [ 'svelte', 'browser', 'module', 'main' ]
@@ -114,7 +117,7 @@ module.exports = {
             ],
             overrides: [
                {
-                  files: ['*.svelte'],
+                  files: [ '*.svelte' ],
                   processor: 'svelte3/svelte3'
                }
             ],

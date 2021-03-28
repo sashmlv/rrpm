@@ -1,6 +1,5 @@
 <script>
-
-   import Menu from './components/menu';
+   import Main from 'components/main';
 </script>
 
-<Menu />
+<Main />

@@ -22,7 +22,7 @@ module.exports = {
       publicPath: `/`,
       filename: 'index.js',
       clean: {
-         keep(asset) {
+         keep( asset ) {
             return [
                'favicon.ico',
                'gui.js',
@@ -30,14 +30,14 @@ module.exports = {
                'index.html',
                'styles.css',
                'styles.css.map',
-            ].find(v => asset.includes(v));
+            ].find( v => asset.includes( v ));
          },
       },
    },
    plugins: [
 
       new webpack.DefinePlugin({
-         BUNDLE: JSON.stringify(true)
+         BUNDLE: JSON.stringify( true )
       })
    ],
 };
